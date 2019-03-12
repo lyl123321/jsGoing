@@ -1,0 +1,10 @@
+#offp {
+	margin: 100px;
+	padding: 20px;
+	height: 2000px;
+	position: relative;
+	border: 1px solid black;
+}
+#off {
+	border: 1px solid red;
+}
