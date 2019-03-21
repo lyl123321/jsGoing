@@ -2,26 +2,27 @@
 <html> 
 <head>
 	<meta charset="utf-8" />
-	<script src="jquery.js"></script>
+	<link rel="stylesheet" href="test.css" />
 	<style>
-		#image {
-			border: 1px solid black;
-			position: relative;
-			margin: 100px;
-			width: 200px;
-			height:200px;
-		}
-	</style>
+  #outer {
+    padding: 20px;
+    background: #616161;
+  }
+
+  #inner {
+    width: 100px;
+    height: 100px;
+    background: #757575;
+  }
+</style>
+	<title>展示</title>
 </head> 
 	<body>
-		<div id="image"></div>
-		<input id="input" type="file" multiple="multiple"/>
-		<p id="info"></p>
+		<div class="container">
+			<div id="outer">
+			  <div id="inner"></div>
+			</div>
+		</div>
 		<script type="text/javascript" src="test.js" ></script>
-		<!--
-        	作者：2099367442@qq.com
-        	时间：2019-03-07
-        	描述：
-        <script type="text/javascript" src="polyfill.js" ></script>-->
 	</body>
 </html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html> 
+<html> 
+<head>
+	<meta charset="utf-8" />
+	<style>
+		#image {
+			border: 1px solid black;
+			box-shadow: 5px 5px rgba(0, 0, 0, .6);
+			background: no-repeat contain;
+			position: relative;
+			margin: 20px;
+			width: 500px;
+			height:400px;
+		}
+		label {
+			-webkit-text-decoration:underline wavy;
+			-moz-text-decoration:underline wavy;
+			text-decoration:underline wavy;
+			cursor: pointer;
+			background: pink;
+			color: mediumslateblue;
+		}
+	</style>
+</head> 
+	<body>
+		<div id="image"></div>
+		<input id="input" type="file" multiple="multiple"/>
+		<p id="info"></p>
+		<!--
+        	描述：将 input 控件隐藏起来，使用 label 来触发 file input 控件，
+        	可以给 label 元素添加样式
+        -->
+		<input type="file" id="fileElem" multiple accept="image/*" style="display:none" onchange="handleFiles(this.files)">
+		<label for="fileElem">Select some files</label>
+		<script type="text/javascript" src="../js/test_fileReader.js" ></script>
+	</body>
+</html>

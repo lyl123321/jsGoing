@@ -1,0 +1,62 @@
+<!DOCTYPE html> 
+<html> 
+<head>
+	<meta charset="utf-8" />
+	<title>天气预报</title>
+	<style>
+		html {
+			font-size: 10px;
+		}
+		body {
+			background: lightyellow;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+		}
+		.container {
+			width: 400px;
+			height: 80%;
+			display: flex;
+			flex-flow:wrap column;
+			justify-content: center;
+			align-items: center;
+		}
+		.query {
+			width: 400px;
+			display: flex;
+			flex-flow:nowrap;
+			justify-content: center;
+			align-items: center;
+			flex: 1 1 100px;
+		}
+		#info {
+			width: 400px;
+			margin: 2rem;
+			font-size: 1.5rem;
+			text-align: center;
+			border: 0.1rem solid #222;
+			border-radius: 25%;
+			overflow: auto;
+			flex: 3 2;
+		}
+	</style>
+</head> 
+	<body>
+		<div class="container">
+			<div id="query">
+				<input id="city" name="city" required="required" autocomplete="on" list="cities"/>
+				<datalist id="cities">
+					<option value="番禺">
+					<option value="广州">
+					<option value="邵东">
+				</datalist>
+				<button id="but">查询天气</button>
+			</div>
+			<div id="info">
+				天气预报：
+			</div>
+		</div>
+		<script type="text/javascript" src="../js/weather.js" ></script>
+	</body>
+</html>

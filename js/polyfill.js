@@ -24,7 +24,7 @@ if(typeof Function.prototype.bind != 'function') {
 		      	throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
 		    }
 			
-			thisArg = thisArg || {};
+			thisArg = thisArg || null;
 			var args = [].slice.call(arguments, 1);
 			
 			return function() {
