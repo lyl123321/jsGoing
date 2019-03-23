@@ -1,126 +1,69 @@
-;(function(window) {
-    function Promise(executor) {
-        var self = this;
-        this.status = 'pending';
-        this.resolveArgs = [];
-        this.rejectArgs = [];
-        this.finallyFn = function() {};
-        
-        typeof executor === 'function' ? executor.call(window, function() {
-            self.status = 'fulfilled';
-            self.resolveArgs = [].slice.call(arguments);
-        }, function() {
-            self.status = 'rejected';
-            self.rejectArgs = [].slice.call(arguments);
-        }) : false;
-    }
-    
-    Object.defineProperties(Promise, {
-        resolve: {
-            value: resolve,
-            configurable: true,
-            writable: true
-        },
-        
-        reject: {
-            value: reject,
-            configurable: true,
-            writable: true
-        },
-        
-        race: {
-            value: function() {},
-            configurable: true,
-            writable: true
-        },
-        
-        all: {
-            value: function() {},
-            configurable: true,
-            writable: true
-        }
-    });
-    
-    Promise.prototype = {
-        constructor: Promise,
-        
-        then: function(onFulfilled, onRejected) {
-            var res,
-                pro = new Promise();
-            
-            //用 macrotask 模仿 microtask
-            setTimeout(function(that) {
-                try{
-                    if(that.status === 'fulfilled') {
-                        res = onFulfilled.apply(null, that.resolveArgs);
-                    } else if(that.status === 'rejected') {
-                        res = onRejected.apply(null, that.rejectArgs);
-                    }
-                } catch(err) {
-                    pro.status = 'rejected';
-                    pro.rejectArgs = [err];
-                    return pro;
-                }
-                
-                if(res instanceof Promise) {
-                    if(res.status === 'rejected') {
-                        pro.status = 'rejected';
-                        pro.rejectArgs = res.rejectArgs;
-                    } else if(res.status === 'fulfilled') {
-                        pro.status = 'fulfilled';
-                        pro.resolveArgs = res.resolveArgs;
-                    } else {
-                        pro.status = 'pending';
-                    }
-                } else {
-                    pro.status = 'fulfilled';
-                    pro.resolveArgs = [res];
-                }
-            }, 0, this);
-            
-            return pro;
-        },
-        
-        catch: function(onRejected) {
-            return this.status === 'fulfilled' ? this : this.then(undefined, onRejected);
-        },
-        
-        finally: function(onFinally) {
-            var pro = new Promise();
-            this.finallyFn = pro.finallyFn = onFinally;
-            
-            //用 macrotask 模仿 microtask
-            setTimeout(onFinally, 0);
-            return pro;
-        },
-    }
-    
-    function resolve() {
-        var pro = new Promise();
-        pro.status = 'fulfilled';
-        pro.resolveArgs = [].slice.call(arguments);
-        return pro;
-    }
-    
-    function reject() {
-        var pro = new Promise();
-        pro.status = 'rejected';
-        pro.rejectArgs = [].slice.call(arguments);
-        return pro;
-    }
-    
-    window.$Promise = window.Promise = Promise;
-})(window);
+(function($) {
+	$.fn.scrollLoading = function(options) {
+		var defaults = {
+			attr: "data-url",
+			container: $(window),
+			callback: $.noop
+		};
+		var params = $.extend({}, defaults, options || {});
+		params.cache = [];
+		$(this).each(function() {
+			var node = this.nodeName.toLowerCase(), url = $(this).attr(params["attr"]);
+			//重组
+			var data = {
+				obj: $(this),
+				tag: node,
+				url: url
+			};
+			params.cache.push(data);
+		});
+		
+		var callback = function(call) {
+			if ($.isFunction(params.callback)) {
+				params.callback.call(call.get(0));
+			}
+		};
+		//动态显示数据
+		var loading = function() {
+			
+			var contHeight = params.container.height();
+			if ($(window).get(0) === window) {
+				contop = $(window).scrollTop();
+			} else {
+				contop = params.container.offset().top;
+			}		
+			
+			$.each(params.cache, function(i, data) {
+				var o = data.obj, tag = data.tag, url = data.url, post, posb;
 
-//测试
-var p2 = $Promise.resolve("calling next").catch(function (reason) {
-    //这个方法永远不会调用
-    console.log("catch p1!");
-    console.log(reason);
-}).then(function (value) {
-    console.log("next promise's onFulfilled"); /* next promise's onFulfilled */
-    console.log(value); /* calling next */
-}, function (reason) {
-    console.log("next promise's onRejected");
-    console.log(reason);
-});
+				if (o) {
+					post = o.offset().top - contop, post + o.height();
+	
+					if (o.is(':visible') && (post >= 0 && post < contHeight) || (posb > 0 && posb <= contHeight)) {
+						if (url) {
+							//在浏览器窗口内
+							if (tag === "img") {
+								//图片，改变src
+								callback(o.attr("src", url));		
+							} else {
+								o.load(url, {}, function() {
+									callback(o);
+								});
+							}		
+						} else {
+							// 无地址，直接触发回调
+							callback(o);
+						}
+						data.obj = null;	
+					}
+				}
+			});	
+		};
+		
+		//事件触发
+		//加载完毕即执行
+		loading();
+		//滚动执行
+		params.container.bind("scroll", loading);
+	};
+})(jQuery);

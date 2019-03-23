@@ -6,6 +6,7 @@
  * 2、迭代器协议定义了一种标准的方式来产生一个有限或无限序列的值，并且当所有的值都已经被迭代后，就会有一个默认的返回值。
  * 一个对象要想满足迭代器协议，该对象必须实现了一个 next 方法，而且 next 方法必须要返回一个对象，
  * 该对象有两个必要的属性： done 和 value（超过可迭代次数后可省略 value 值）。
+ * 注：迭代器还可以添加 return 方法和 throw 方法。
  * 3、
  * 内置的可迭代对象：String, Array, TypedArray, Map 和 Set；
  * 接受可迭代对象的内置 API：Map([iterable]), WeakMap([iterable]), Set([iterable]), WeakSet([iterable]),
