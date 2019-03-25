@@ -38,6 +38,7 @@ if(typeof Function.prototype.bind != 'function') {
 }
 
 3\Object.assign
+//es5
 if(typeof Object.assign != 'function') {
 	Object.defineProperty(Object, 'assign', {
 		value: function assign(target) {
@@ -59,6 +60,32 @@ if(typeof Object.assign != 'function') {
 			}
 			
 			return res;
+		},
+		enumerable: false,
+		configurable: true,
+		writable: true
+	});
+}
+//es6
+'use strict';
+if(typeof Object.assign != 'function') {
+	Object.defineProperty(Object, 'assign', {
+		value: function assign(target, ...sources) {
+			if(target == null)
+				throw new TypeError('Cannot convert undefined or null to object');
+			
+			return sources.reduce((acc, cur) => {
+				if(cur == null)
+					return acc;
+				
+				cur = Object(cur);
+				
+				[...Object.keys(cur), ...Object.getOwnPropertySymbols(cur)].forEach(key => {
+					acc[key] = cur[key];
+				});
+				
+				return acc;
+			}, Object(target));
 		},
 		enumerable: false,
 		configurable: true,

@@ -96,7 +96,7 @@ for(let value of fibIterator) {
 //测试4: generator 对象既是迭代器对象也是可迭代对象
 console.log('测试4: generator 对象既是迭代器对象也是可迭代对象');
 function* fibMaker(){
-    let a = 0, b = 1;
+    let [a, b] = [0, 1];
     
     for(;;) {
     	[a, b] = [b, a + b];
@@ -116,3 +116,27 @@ for(let value of fibIterator2) {
 console.log(typeof fibIterator2.next);					//说明它是迭代器对象
 console.log(typeof fibIterator2[Symbol.iterator]);		//说明它是可迭代对象
 console.log(fibIterator2[Symbol.iterator]() === fibIterator2);	//说明它的迭代器就是它本身
+
+//测试5: 用于可迭代对象的语法: for-of 循环, ...展开运算符, yield* 和解构赋值。
+function* numbers () {
+  yield 1
+  yield 2
+  return 3
+  yield 4
+}
+
+// 扩展运算符
+[...numbers()] // [1, 2]
+
+// Array.from 方法
+Array.from(numbers()) // [1, 2]
+
+// 解构赋值
+let [x, y] = numbers();
+x // 1
+y // 2
+
+// for...of 循环
+for (let n of numbers()) {
+  console.log(n)
+}

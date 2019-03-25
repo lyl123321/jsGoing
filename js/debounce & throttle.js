@@ -7,16 +7,18 @@ var app = new Vue({
 		count : throttle(debounce(function(){this.timer++}, 100), 1000)
 	}
 });
+
 //防抖
-function debounce (fn, delay) {
-	var timer = null;
-	return function() {
+function debounce(fn, delay) {
+	let timer = null;
+	return function(...args) {
 		clearTimeout(timer);
-		timer = setTimeout((self, args) => fn.apply(self, args), delay, this, arguments);
+		timer = setTimeout(() => fn.apply(this, args), delay);
 	}
 }
+
 //节流
-function throttle (fn, delay) {
+function throttle(fn, delay) {
 	var run = true;
 	return function() {
 		if(!run) return;

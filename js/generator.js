@@ -15,6 +15,7 @@ console.log(genIte.next().value);
 GeneratorFunction.prototype.str = 'Hello';
 console.log(gen.str);
 //神奇的操作
+console.log(genIte instanceof gen)	//true
 console.log(gen.constructor.prototype === genIte.constructor);	//true???
 console.log(gen.constructor.prototype.prototype === genIte.constructor.prototype);	//true???
 */
@@ -49,7 +50,6 @@ gen.next();             // 0
 gen.next('pretzel');    // 1 pretzel
 gen.next('california'); // 2 california
 gen.next('mayonnaise'); // 3 mayonnaise
-*/
 //3\使用迭代器遍历二维数组并转换成一维数组
 function* iteArray(arr) {
 	for(const value of arr) {
@@ -71,6 +71,7 @@ var arr = [ 'a', ['b',[ 'c', ['d', 'e']]]];
 var gen = iteArray(arr);
 arr = [...gen];
 console.log(arr);
+*/
 
 /*3、yield* 表达式
 //yield* 表达式用于委托给另一个generator 或可迭代对象。
@@ -92,9 +93,40 @@ var iterator = g5();
 console.log(iterator.next()); // { value: 1, done: false }
 console.log(iterator.next()); // { value: 2, done: false }
 console.log(iterator.next()); // { value: 3, done: false }
-console.log(iterator.next()); // { value: undefined, done: true }, 
-console.log(result);          // 此时 g4() 返回了 { value: "foo", done: true }  
+console.log(iterator.next()); // { value: undefined, done: true }, 与直接遍历g4()不同
+console.log(result);          // 此时 g4() 返回了 { value: "foo", done: true }
 */
+
+// 使用yield*语句遍历完全二叉树。
+// 下面是二叉树的构造函数，
+// 三个参数分别是左树、当前节点和右树
+function Tree(left, label, right) {
+  this.left = left;
+  this.label = label;
+  this.right = right;
+}
+
+// 下面是中序（inorder）遍历函数。
+// 由于返回的是一个遍历器，所以要用generator函数。
+// 函数体内采用递归算法，所以左树和右树要用yield*遍历
+function* inorder(t) {
+  if (t) {
+    yield* inorder(t.left);
+    yield t.label;
+    yield* inorder(t.right);
+  }
+}
+
+// 下面生成二叉树
+function make(array) {
+  // 判断是否为叶节点
+  if (array.length == 1) return new Tree(null, array[0], null);
+  return new Tree(make(array[0]), array[1], make(array[2]));
+}
+let tree = make([[['a'], 'b', ['c']], 'd', [['e'], 'f', ['g']]]);
+
+// 遍历二叉树
+console.log(tree, [...inorder(tree)]);
 
 //4、generator 对象  原型上的方法
 //next(valueArg)： valueArg 传递给生成器函数中上一个 yield 表达式的值，返回对象 { value: yield 产出值, done: false };
