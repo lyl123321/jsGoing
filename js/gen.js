@@ -1,6 +1,6 @@
 //自动执行 generator
 //1、回调
-function getJSON(url) {
+function getJSON_TH(url) {
 	return function(fn) {
 		const xhr = new XMLHttpRequest();
 		
@@ -23,10 +23,9 @@ function getJSON(url) {
 }
 
 function* gen() {
-	let res1 = yield getJSON('/data1.json');
-	console.log(JSON.parse(res1));
-	let res2 = yield getJSON('/data2.json');
-	console.log(JSON.parse(res2));
+	const data1 = yield getJSON_TH('https://www.apiopen.top/weatherApi?city=广州');
+	const data2 = yield getJSON_TH('https://www.apiopen.top/weatherApi?city=番禺');
+	console.log(data1, data2);
 }
 
 //手动
@@ -57,7 +56,7 @@ function run(gen) {
 run(gen);
 
 //2、Promise
-function getJSON(url) {
+function getJSON_PM(url) {
 	return new Promise((resolve, rejext) => {
 		const xhr = new XMLHttpRequest();
 		
@@ -70,15 +69,14 @@ function getJSON(url) {
 			if(this.readyState !== 4) return;
 			if(this.status === 200) return resolve(this.response);
 			reject(new Error(this.statusText));
-		}
-	})
+		};
+	});
 }
 
 function* gen() {
-	let res1 = yield getJSON('/data1.json');
-	console.log(JSON.parse(res1));
-	let res2 = yield getJSON('/data2.json');
-	console.log(JSON.parse(res2));
+	const data1 = yield getJSON_PM('https://www.apiopen.top/weatherApi?city=广州');
+	const data2 = yield getJSON_PM('https://www.apiopen.top/weatherApi?city=番禺');
+	console.log(data1, data2);
 }
 
 //手动
@@ -99,4 +97,29 @@ function run(gen) {
 	}
 	
 	next();
+}
+
+run(gen);
+
+//3、thunk
+function thunkify(fn) {
+	return function(...args) {
+		const ctx = this;
+		
+		return function(cb) {
+			let called = false;
+			
+			cb = function(...arg) {
+				if(called) return;
+				called = true;
+				cb.apply(null, arg);
+			};
+			
+			try {
+				fn.call(ctx, ...args, cb);
+			} catch (err) {
+		        cb(err);
+		    }
+		}
+	}
 }
