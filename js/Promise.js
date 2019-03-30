@@ -243,6 +243,7 @@ Events.prototype = {
 			return value;
 		}
 		
+		//thenable 对象
 		if(typeof value === 'object' && typeof value.then === 'function') {
 			return new Promise(value.then);
 		}
