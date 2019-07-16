@@ -15,15 +15,16 @@ function createCurry1(fn, minNum) {
 	}([]);
 }
 
+//这种不错
 function createCurry2(fn, minNum) {
 	var args = [],
-		minNum = minNum ? minNum : fn.length;
+		minNum = minNum >= 0 ? minNum : fn.length;
 	
 	return function curry() {
 		//args = args.concat([].slice.call(arguments));
-		//args.push(...arguments);
+		//[].push.call(args, ...arguments);
 		//[].push.apply(args, [].slice.call(arguments));
-		[].push.call(args, ...arguments);
+		args.push(...arguments);
 		
 		if(args.length < minNum) {
 			return curry;
@@ -44,6 +45,8 @@ console.log(checkEmail('xxxxx@test.com'));
 //2\无限位数
 function add(){
 	var args = [].slice.call(arguments) || [];
+	//var args = Array.from(arguments) || [];
+	//var args = [...arguments] || [];
 	
 	function _add() {
 		//args = args.concat([].slice.call(arguments));
@@ -61,3 +64,31 @@ function add(){
 }
 
 console.log(add(1)(2)()(4));
+
+//简单的写法
+//无限
+function add(...args) {
+	function curry(...args2) {
+		args.push(...args2);
+		return curry;
+	}
+	
+	curry.toString = () => args.reduce((acc, cur) => acc + cur);
+	
+	return curry;
+}
+
+//有限
+function creatCurry(fn, ...args) {
+	var minLen = fn.length;
+	
+	return function curry(...args2) {
+		args.push(...args2);
+		
+		if(args.length < minLen) {
+			return curry;
+		}
+		
+		return fn.apply(this, args);
+	}
+}

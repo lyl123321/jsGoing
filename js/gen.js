@@ -101,7 +101,8 @@ function run(gen) {
 
 run(gen);
 
-//3、thunk
+
+//thunk
 function thunkify(fn) {
 	return function(...args) {
 		const ctx = this;

@@ -7,11 +7,3 @@ body {
 	background: lightyellow;
 	height: 100%;
 }
-
-.container {
-	width: 500px;
-	height: 300px;
-	border: 1px solid;
-	margin: 0 auto;
-	overflow: hidden;
-}

@@ -1,0 +1,181 @@
+<!DOCTYPE html> 
+<html> 
+<head>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="test.css" />
+	<title>展示</title>
+	<style>
+		html {
+			font-size: 10px;
+			height: 100vh;
+		}
+
+		body {
+			background: lightyellow;
+			height: 100%;
+		}
+
+		/* 1、CSS实现文字下面波浪线动画效果
+		 * 半径为 10px ，高度为 3px 的两个弧线，用 bg-position 移到底部
+		 */
+		.flow-wave2 {
+			background: radial-gradient(circle at 10px -7px, transparent 9px, currentColor 9px, currentColor 10px, transparent 10px) 14px calc(100% + 17px),
+				radial-gradient(circle at 10px 27px, transparent 9px, currentColor 9px, currentColor 10px, transparent 10px) 0 calc(100% - 3px);
+			background-size: 28px 20px;
+			background-repeat: repeat-x;
+		}
+
+		/*
+		 * 半径为 9px ，高度为 2px 的两个弧线，用 bg-position 移到底部， bg-position 的百分值参考容器尺寸减去背景图尺寸进行计算
+		 */
+		.flow-wave {
+			color: #F30;
+			text-decoration: underline currentColor;
+		}
+
+		.flow-wave:hover,
+		.flow-wave:focus {
+			text-decoration: none;
+			background: radial-gradient(circle at 10px -7px, transparent 8px, currentColor 8px, currentColor 9px, transparent 9px) 10px calc(100% + 18px),
+				radial-gradient(circle at 10px 27px, transparent 8px, currentColor 8px, currentColor 9px, transparent 9px) 0 calc(100% - 2px);
+			background-size: 20px 20px;
+			background-repeat: repeat-x;
+			animation: waveFlow 1s infinite linear;
+		}
+
+		@keyframes waveFlow{
+			from{background-position-x: 10px, 0;}
+			to{background-position-x: 30px, 20px;}
+		}
+
+		/* 2、使用disabled禁用所有表单input输入框元素 */
+		fieldset[disabled] {
+		   -ms-pointer-events: none;
+		   pointer-events: none;
+		}
+
+		/* 3、伪类匹配列表数目实现微信群头像CSS布局的技巧 */
+		ul {
+		  padding: 0; margin: 0;
+		  list-style-type: none;
+		  width: 240px; height: 240px;
+		  background-color: #eee;
+		}
+		li {
+		  background: url(https://image.zhangxinxu.com/image/study/head/s180/14.jpeg);
+		  background-size: 100%;
+		  outline: 1px solid #fff;
+		}
+		/* 1个 */
+		li:only-child {
+		  height: 100%;
+		}
+		/* 2个 */
+		li:first-child:nth-last-child(2),
+		li:first-child:nth-last-child(2) + li {
+		  width: 50%; height: 50%;
+		}
+		li:first-child:nth-last-child(2) + li {
+		  margin-left: auto;
+		}
+		li:first-child:nth-last-child(3),
+		li:first-child:nth-last-child(3) ~ li {
+		  width: 50%; height: 50%;
+		}
+		li:first-child:nth-last-child(3) {
+			margin: auto;
+		}
+		li:first-child:nth-last-child(3) ~ li {
+		  float: left;
+		}
+		/* 4个 */
+		li:first-child:nth-last-child(4),
+		li:first-child:nth-last-child(4) ~ li {
+		  width: 50%; height: 50%;
+		  float: left;
+		}
+		/* 5个 */
+		li:first-child:nth-last-child(5),
+		li:first-child:nth-last-child(5) ~ li {
+		  width: 80px;
+		  height: 80px;
+		  float: left;
+		}
+		li:first-child:nth-last-child(5) {
+		  margin: 40px 0 0 40px;
+		}
+		li:first-child:nth-last-child(5) + li {
+		  margin-top: 40px;
+		}
+		/* 6个 */
+		li:first-child:nth-last-child(6),
+		li:first-child:nth-last-child(6) ~ li {
+		  width: 80px;
+		  height: 80px;
+		  float: left;
+		}
+		li:first-child:nth-last-child(6),
+		li:first-child:nth-last-child(6) + li,
+		li:first-child:nth-last-child(6) + li + li {
+		  margin-top: 40px;
+		}
+		/* 7个 */
+		li:first-child:nth-last-child(7),
+		li:first-child:nth-last-child(7) ~ li {
+		  width: 80px;
+		  height: 80px;
+		  float: left;
+		}
+		li:first-child:nth-last-child(7) {
+		  margin: 0 80px;
+		}
+		/* 8个 */
+		li:first-child:nth-last-child(8),
+		li:first-child:nth-last-child(8) ~ li {
+		  width: 80px;
+		  height: 80px;
+		  float: left;
+		}
+		li:first-child:nth-last-child(8) {
+		  margin-left: 40px;
+		}
+		/* 9个 */
+		li:first-child:nth-last-child(9),
+		li:first-child:nth-last-child(9) ~ li {
+		  width: 80px;
+		  height: 80px;
+		  float: left;
+		}
+	</style>
+</head> 
+	<body>
+		<a href="javascript:" class="flow-wave">CSS径向渐变模拟波浪线</a>
+		<hr />
+		<form>
+		    <fieldset disabled>
+		        <legend>完成您的购物订单</legend>
+		        <input />
+		    </fieldset>
+		</form>
+		<hr />
+		<h4>1个头像</h4>
+		<ul><li></li></ul>
+		<h4>2个头像</h4>
+		<ul><li></li><li></li></ul>
+		<h4>3个头像</h4>
+		<ul><li></li><li></li><li></li></ul>
+		<h4>4个头像</h4>
+		<ul><li></li><li></li><li></li><li></li></ul>
+		<h4>5个头像</h4>
+		<ul><li></li><li></li><li></li><li></li><li></li></ul>
+		<h4>6个头像</h4>
+		<ul><li></li><li></li><li></li><li></li><li></li><li></li></ul>
+		<h4>7个头像</h4>
+		<ul><li></li><li></li><li></li><li></li><li></li><li></li><li></li></ul>
+		<h4>8个头像</h4>
+		<ul><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li></ul>
+		<h4>9个头像</h4>
+		<ul><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li></ul>
+		<script type="text/javascript" src="test.js" ></script>
+	</body>
+</html>

@@ -1,22 +1,4 @@
-1\Array.prototype.map
-if(typeof Array.prototype.map != 'function') {
-	Object.defineProperty(Array.prototype, 'map', {
-		value: function map(fn, th) {
-			var arr = [],
-				self = this,
-				th = th || window;
-			for(var i in self) {
-				arr[i] = fn.call(th, self[i], i, self);
-			}
-			return arr;
-		},
-		enumerable: false,
-		configurable: true,
-		writable: true
-	});
-}
-
-2\Function.prototype.bind
+1\Function.prototype.bind
 if(typeof Function.prototype.bind != 'function') {
 	Object.defineProperty(Function.prototype, 'bind', {
 		value: function bind(thisArg) {
@@ -37,7 +19,7 @@ if(typeof Function.prototype.bind != 'function') {
 	});
 }
 
-3\Object.assign
+2\Object.assign
 //es5
 if(typeof Object.assign != 'function') {
 	Object.defineProperty(Object, 'assign', {
@@ -93,7 +75,7 @@ if(typeof Object.assign != 'function') {
 	});
 }
 
-4\Object.create
+3\Object.create
 if(typeof Object.create != 'function') {
 	Object.defineProperty(Object, 'create', {
 		value: function create(proto, propertiesObject) {
@@ -110,6 +92,43 @@ if(typeof Object.create != 'function') {
 			}
 			
 			return res;
+		},
+		enumerable: false,
+		configurable: true,
+		writable: true
+	});
+}
+
+4\Array.isArray
+if(!Array.isArray) {
+	Array.isArray = function(arg) {
+		return {}.toString.apply(arg) === '[object Array]';
+	}
+}
+
+5\Array.of
+if(!Array.of) {
+  Array.of = function() {
+    return Array.prototype.slice.call(arguments);
+    //return Array.from(arguments);
+  };
+}
+//或者
+if(!Array.of) {
+	Array.of = (...args) => args;
+}
+
+6\Array.prototype.map
+if(typeof Array.prototype.map != 'function') {
+	Object.defineProperty(Array.prototype, 'map', {
+		value: function map(fn, th) {
+			var arr = [],
+				self = this,
+				th = th || window;
+			for(var i in self) {
+				arr[i] = fn.call(th, self[i], i, self);
+			}
+			return arr;
 		},
 		enumerable: false,
 		configurable: true,
